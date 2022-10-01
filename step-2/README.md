@@ -1,7 +1,7 @@
 # Step 2: Complete game board markup
 In your root directory, create a `script.js` file.
 
-In the `<head>` of you `index.html` file, reference that file.
+In the `<head>` of your `index.html` file, reference that file.
 ```html
 <script src="./script.js" defer></script>
 ```

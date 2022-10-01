@@ -75,6 +75,6 @@ At the end of the `style.js` file, execute the `shuffleCards()` function:
 shuffleCards();
 ```
 
-Test the game in your browser with the devTools javascript console open. Whenever you refresh the page, the card images should shuffle. When you click on a card you should see your `console.log` message from the `flipCard` function.
+Test the game in your browser with the devTools JavaScript console open. Whenever you refresh the page, the card images should shuffle. When you click on a card you should see your `console.log` message from the `flipCard` function.
 
 In the [Step 4](/step-4), we'll build-out the `flipCard` function.
