@@ -1,4 +1,4 @@
-# Step 4
+# Step 4: Click events and flipped cards
 When it comes to JavaScript and listening for user events, we can write functions with an already-expected parameter, the `event` parameter, which expects an argument that is an `Object` carrying specific event properties with values taken from the event input.
 
 For example: when I am browsing the web on my laptop, I sometimes click a button on the screen that has text that reads "Checkout". When I click this button, a `click` event will call a function (callback function) to run.
@@ -81,3 +81,5 @@ disableDeck = true; // set this to true for the next time this flipCard function
 ```
 
 Test the game now, and you should only be able to _flip_ two cards.
+
+In [Step 5](/step-5) we will evaluate if the two flipped cards match.

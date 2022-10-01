@@ -1,4 +1,4 @@
-# Step 3
+# Step 3: Setup script file
 In your `script.js` file, setup some global variables:
 ```js
 const cards = document.querySelectorAll(".card");
@@ -77,4 +77,4 @@ shuffleCards();
 
 Test the game in your browser with the devTools javascript console open. Whenever you refresh the page, the card images should shuffle. When you click on a card you should see your `console.log` message from the `flipCard` function.
 
-In the next step, we'll build-out the `flipCard` function.
+In the [Step 4](/step-4), we'll build-out the `flipCard` function.

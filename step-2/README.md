@@ -1,4 +1,4 @@
-# Step 2
+# Step 2: Complete game board markup
 In your root directory, create a `script.js` file.
 
 In the `<head>` of you `index.html` file, reference that file.
@@ -24,6 +24,15 @@ Note here that there are two divs - a `front-view` and a `back-view`. The `front
 
 # Images
 Create an `images` directory in your project root, and add these images:
+- [img-1.png](/images/img-1.png)
+- [img-2.png](/images/img-2.png)
+- [img-3.png](/images/img-3.png)
+- [img-4.png](/images/img-4.png)
+- [img-5.png](/images/img-5.png)
+- [img-6.png](/images/img-6.png)
+- [img-7.png](/images/img-7.png)
+- [img-8.png](/images/img-8.png)
+- [que_icon.svg](/images/que_icon.svg)
 
 Note that there are 8 images, and one icon. Our game board should have 16 cards, of 8 matching pairs.
 
@@ -90,4 +99,4 @@ In your `style.css` file, add this CSS for the _cards_:
 }
 ```
 
-Preview your game - you should see your game board with 16 cards, and 8 matching image pairs.
+Preview your game - you should see your game board with 16 cards, and 8 matching image pairs. Onward to [Step 3](/step-3)!

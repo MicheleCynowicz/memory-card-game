@@ -1,3 +1,4 @@
+# Step 6: User experience (UX)
 Let's fix up some of the smaller interactions in our game.
 
 First, let's add a `setTimeout` function inside of our `matchCards` function, so that our user has a chance to see the second card revealed, before deciding that it doesn't match. Wrap the last 5 lines of code in the `matchCards` function in a `setTimeout` function:
