@@ -24,15 +24,15 @@ Note here that there are two divs - a `front-view` and a `back-view`. The `front
 
 # Images
 Create an `images` directory in your project root, and add these images:
-- [img-1.png](/images/img-1.png)
-- [img-2.png](/images/img-2.png)
-- [img-3.png](/images/img-3.png)
-- [img-4.png](/images/img-4.png)
-- [img-5.png](/images/img-5.png)
-- [img-6.png](/images/img-6.png)
-- [img-7.png](/images/img-7.png)
-- [img-8.png](/images/img-8.png)
-- [que_icon.svg](/images/que_icon.svg)
+- [img-1.png](/step-2/images/img-1.png)
+- [img-2.png](/step-2/images/img-2.png)
+- [img-3.png](/step-2/images/img-3.png)
+- [img-4.png](/step-2/images/img-4.png)
+- [img-5.png](/step-2/images/img-5.png)
+- [img-6.png](/step-2/images/img-6.png)
+- [img-7.png](/step-2/images/img-7.png)
+- [img-8.png](/step-2/images/img-8.png)
+- [que_icon.svg](/step-2/images/que_icon.svg)
 
 Note that there are 8 images, and one icon. Our game board should have 16 cards, of 8 matching pairs.
 
