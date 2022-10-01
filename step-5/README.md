@@ -1,6 +1,7 @@
+# Step 5: Compare cards and count pairs
 In the last step we setup the `flipCard` function and the global variables `cardOne`, `cardTwo`, and `disableDeck` in such a way that our player can only _flip_ two cards on the game board. Next we will create a `matchCards` function in `script.js` to evaluate the contents of our two cards to decide if they are a match.
 
-In `script.js` create a this new function:
+In `script.js` create this new function:
 ```js
 function matchCards(img1, img2) {
 
@@ -114,6 +115,6 @@ JavaScript is FAST. In this case, it's faster than the CSS animation to flip the
 
 That's not fair gameplay is it? You never get to view the second card you clicked UNLESS it was a matched image :-(
 
-We'll fix this in the next step.
+We'll fix this in [Step 6](/step-6).
 
 

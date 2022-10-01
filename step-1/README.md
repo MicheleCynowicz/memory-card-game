@@ -1,4 +1,4 @@
-# Getting Started
+# Step 1: Prep your files
 In your new, empty project, create the following files:
 `index.html`
 `style.css`
@@ -44,4 +44,4 @@ body {
 }
 ```
 
-Preview your game in a browser. There isn't much to it yet, but you should at least see a small "game board" on the screen. If it's there, you can move on to Step 2.
+Preview your game in a browser. There isn't much to it yet, but you should at least see a small "game board" on the screen. If it's there, you can move on to [Step 2](/step-2).
