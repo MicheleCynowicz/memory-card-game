@@ -49,8 +49,6 @@ body {
 }
 ```
 
-Preview your game in a browser. There isn't much to it yet, but you should at least see a small "game board" on the screen.
-
 Next add the following block of 16 `li` tags inside of the `<ul>` tag in your `index.html` file:
 ```html
 <li class="card">
