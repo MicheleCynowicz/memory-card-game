@@ -1,102 +1,88 @@
-# Step 2: Complete game board markup
-In your root directory, create a `script.js` file.
+# Step 2: Setup script file
+When a player wants to begin a a memory game, the cards need to be "shuffled" so that they show up in a random order. We will accomplish this with JavaScript.
 
-In the `<head>` of your `index.html` file, reference that file.
+In the `<head>` of your `index.html` file, reference the `script.js` file.
 ```html
 <script src="./script.js" defer></script>
 ```
 Note that the `<script>` tag above has the `defer` attribute. We are asking our script tag to defer running any scripts until the whole HTML file has rendered.
 
-Within the `game-board` div, add a `ul` for the whole set of _cards_. Each _card_ will be represented by an `<li>` tag, which contains some nested HTML.
-```html
-<ul class="cards">
-  <li class="card">
-    <div class="view front-view">
-      <img src="images/que_icon.svg" alt="icon">
-    </div>
-    <div class="view back-view">
-      <img src="images/img-1.png" alt="card-img">
-    </div>
-  </li>
-</ul>
+At the top of your `script.js` file, setup some global variables:
+```js
+const cards = document.querySelectorAll(".card");
+let matchedPairs = 0;
+let cardOne, cardTwo;
+let disableDeck = false;
 ```
-Note here that there are two divs - a `front-view` and a `back-view`. The `front-view` div contains an `img` tag that's noted as an `icon` and the `back-view` div contains an `img` tag that's noted as `card-img`. In this game, the `back-view` is going to be the image to match, which will be revealed when a card is flipped over. The `fron-view` will be a question mark icon.
+With this code in place, `cards` is a constant that will be an `Array` of `li` tags in the DOM.
 
-# Images
-Create an `images` directory in your project root, and add these images:
-- [img-1.png](/step-2/images/img-1.png)
-- [img-2.png](/step-2/images/img-2.png)
-- [img-3.png](/step-2/images/img-3.png)
-- [img-4.png](/step-2/images/img-4.png)
-- [img-5.png](/step-2/images/img-5.png)
-- [img-6.png](/step-2/images/img-6.png)
-- [img-7.png](/step-2/images/img-7.png)
-- [img-8.png](/step-2/images/img-8.png)
-- [que_icon.svg](/step-2/images/que_icon.svg)
+The other variables are defined with the `let` keyword. Their values will be changed as the program steps through different functions.
 
-Note that there are 8 images, and one icon. Our game board should have 16 cards, of 8 matching pairs.
-
-In your `index.html` file, create 15 more `li` tags like this:
-```html
-<li class="card">
-  <div class="view front-view">
-    <img src="images/que_icon.svg" alt="icon">
-  </div>
-  <div class="view back-view">
-    <img src="images/img-1.png" alt="card-img">
-  </div>
-</li>
-```
-
-Once you have all 16 `<li class="card">...</li>` blocks setup, go through the `back-view` image tags and change the `src` values to be `images/img-1.png`, `images/img-2.png`, `images/img-3.png`, `images/img-4.png`, `images/img-5.png`, `images/img-6.png`, `images/img-7.png`, and `images/img-8.png`. Repeat each image number a second time, so that you have a pair of each image in the `back-view` divs in your code.
-
-In your `style.css` file, add this CSS for the _cards_:
-```css
-.cards,
-.card,
-.view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cards {
-  height: 400px;
-  width: 400px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.cards .card {
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  position: relative;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  height: calc(100% / 4 - 10px);
-  width: calc(100% / 4 - 10px);
-}
-
-.card .view {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  border-radius: 7px;
-  background: #fff;
-  pointer-events: none;
-  backface-visibility: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  transition: transform 0.25s linear;
-}
-
-.card .front-view img {
-  width: 19px;
-}
-
-.card .back-view img {
-  max-width: 45px;
+Let's start with a function that won't do much right away, we'll call this one `flipCard`.
+Add this `flipCard` function under your global variables.
+```js
+function flipCard() {
+  console.log('flipCard was executed');
 }
 ```
 
-Preview your game - you should see your game board with 16 cards, and 8 matching image pairs. Onward to [Step 3](/step-3)!
+After the `flipCard` function, add a function to shuffle the cards (what fun would this game be if the cards were always in the same position?):
+```js
+function shuffleCards() {
+
+}
+```
+Since we'll be making value changes to the global variables (mentioned above) as the game is played, when we DO want to replay the game, we'll want to shuffle the cards and begin again. Start building this `shuffleCards` function with some lines of code that reset the global variables to their original state:
+```js
+  matchedPairs = 0; // reset matchedPairs variable to 0
+  disableDeck = false; // reset disableDeck boolean to false
+  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables to empty string
+```
+Now what about the cards? We already have a `const cards` array that represents each of the `li` tags in the DOM, but we don't need to move the positions of our HTML elements, instead we can use an array of numbers to help shuffle our cards.
+
+On the next line create an array of the numbers 1 through 8, with a duplicate set of those:
+```js
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
+```
+Now we'll "shuffle" this array using the JS Array method `.sort()`:
+```js
+arr.sort(() => Math.random() > 0.5 ? 1 : -1); // randomly sort the array
+```
+There's no need to re-assign the `arr` variable here, the `.sort()` method does that for us.
+
+Now we have an array of `cards` and an array of corresponding numbers that have been randomly sorted (shuffled), so we can use a `.foreach()` loop to combine them:
+```js
+cards.forEach((card, i) => { // loop over the set of cards. For each `card`...
+  card.classList.remove("flip"); // remove the 'flip' class
+  let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
+  imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
+  card.addEventListener("click", flipCard); // add a click event listener to the current card to execute a function `flipCard` when clicked
+});
+```
+
+The whole `shuffleCards` function definition should now look like this:
+```js
+function shuffleCards() {
+  matchedPairs = 0; // reset matchedPairs variable to 0
+  disableDeck = false; // reset disableDeck boolean to false
+  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables to empty string
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
+  arr.sort(() => Math.random() > 0.5 ? 1 : -1); // randomly sort the array
+  
+  cards.forEach((card, i) => { // loop over the set of cards. For each card...
+      card.classList.remove("flip"); // remove the 'flip' class
+      let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
+      imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
+      card.addEventListener("click", flipCard); // add a click event listener to the current card to execute a function `flipCard` when clicked
+  });
+}
+```
+
+At the end of the `style.js` file, execute the `shuffleCards()` function:
+```js
+shuffleCards();
+```
+
+Test the game in your browser with the devTools JavaScript console open. Whenever you refresh the page, the card images should shuffle. When you click on a card you should see your `console.log` message from the `flipCard` function.
+
+In [Step 3](/step-3), we'll build-out the `flipCard` function.

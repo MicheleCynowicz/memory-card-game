@@ -13,7 +13,34 @@ function flipCard(evt) { // take an event object's as a scoped variable
       // everything below will execute if the condition above was not met (if cardOne already had a value when flipCard() was called)
       cardTwo = clickedCard; // set the cardTwo value as the clickedCard
       disableDeck = true; // set this to true for the next time this flipCard function is called, when the top level condition is evaluated
+      // if the function has come this far, it means we have set values for both cardOne and cardTwo.
+      // each of the cardOne and cardTwo variables currently represent a whole HTML element with childNodes
+      let cardOneImg = cardOne.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `img-2.png`, and set that as the value of cardOneImg
+      let cardTwoImg = cardTwo.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `img-2.png`, and set that as the value of cardTwoImg
+      matchCards(cardOneImg, cardTwoImg); // now check the images by filename to see if they are a match!
   }
+}
+
+function matchCards(img1, img2) {
+  if (img1 === img2) { // this code will run if the card images match
+    matchedPairs++; // if the card images match, we can imcrement the global `matchedPairs` variable by 1 match
+    if (matchedPairs == 8) { // if your number of matches is 8, you've made all the matches! Game Won!
+        console.log('YOU WIN!');
+        return; // for now, lets call this game over, end this function and do nothing else.
+    }
+    // everything below will execute if the game has not yet been won...
+    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
+    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
+    cardOne = cardTwo = ""; // now reset the cardOne & cardTwo variables to empty strings, so we can use them again
+    disableDeck = false;
+    return; // end function
+  }
+  // these cards didn't match, un-flip them...
+  cardOne.classList.remove("flip");
+  cardTwo.classList.remove("flip");
+  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
+  disableDeck = false;
+  return; 
 }
 
 function shuffleCards() {
