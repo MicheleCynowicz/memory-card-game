@@ -28,7 +28,7 @@ if (img1 === img2) { // this code will run if the card images match
 
 Yay! You've matched a pair of cards. In order to win the game, the player must match all 8 pairs of cards. Once a pair has been matched, you will need to increment the number of `matchedPairs`. Add this increment operation inside the condition:
 ```js
-matchedPairs++; // if the card images match, we can imcrement the global `matchedPairs` variable by 1 match
+matchedPairs++; // if the card images match, we can increment the global `matchedPairs` variable by 1 match
 ```
 
 If the number of `matchedPairs` gets to `8`, then the game is won! Below the `matchedPairs++` line, add a condition and a response to decide if the game has been won:
@@ -88,7 +88,7 @@ function flipCard(evt) { // take an event object's as a scoped variable
 
 function matchCards(img1, img2) {
   if (img1 === img2) { // this code will run if the card images match
-    matchedPairs++; // if the card images match, we can imcrement the global `matchedPairs` variable by 1 match
+    matchedPairs++; // if the card images match, we can increment the global `matchedPairs` variable by 1 match
     if (matchedPairs == 8) { // if your number of matches is 8, you've made all the matches! Game Won!
         console.log('YOU WIN!');
         return; // for now, lets call this game over, end this function and do nothing else.
