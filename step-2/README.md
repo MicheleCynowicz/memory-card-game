@@ -78,7 +78,7 @@ function shuffleCards() {
 }
 ```
 
-At the end of the `style.js` file, execute the `shuffleCards()` function:
+At the end of the `script.js` file, execute the `shuffleCards()` function:
 ```js
 shuffleCards();
 ```
