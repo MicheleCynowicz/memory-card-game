@@ -13,7 +13,7 @@ Since our `li.card` elements are all the same with the exception of the `src` at
 // if the function has come this far, it means we have set values for both cardOne and cardTwo.
 // each of the cardOne and cardTwo variables currently represent a whole HTML element with childNodes
 let cardOneImg = cardOne.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `images/img-2.png`, and set that as the value of cardOneImg
-let cardTwoImg = cardTwo.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `images/img-2.png`, and set that as the value of cardTwoImg
+let cardTwoImg = cardTwo.querySelector(".back-view img").src; // query the elements inside cardTwo to get the value of the img src, such as `images/img-2.png`, and set that as the value of cardTwoImg
 matchCards(cardOneImg, cardTwoImg); // now check the images by filename to see if they are a match!
 ```
 
