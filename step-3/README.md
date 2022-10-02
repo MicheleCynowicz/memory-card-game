@@ -1,80 +1,87 @@
-# Step 3: Setup script file
-In your `script.js` file, setup some global variables:
-```js
-const cards = document.querySelectorAll(".card");
-let matchedPairs = 0;
-let cardOne, cardTwo;
-let disableDeck = false;
-```
-With this code in place, `cards` is a constant that will be an `Array` of `li` tags in the DOM.
+# Step 3: Click events and flipped cards
+When it comes to JavaScript and listening for user events, we can write functions with an already-expected parameter, the `event` parameter, which expects an argument that is an `Object` carrying specific event properties with values taken from the event input.
 
-The other variables are defined with the `let` keyword. Their values will be changed as the program steps through different functions.
+For example: when I am browsing the web on my laptop, I sometimes click a button on the screen that has text that reads "Checkout". When I click this button, a `click` event will call a function (callback function) to run.
 
-Let's start with a function that won't do much right away, we'll call this one `flipCard`.
-Add this `flipCard` function under your global variables.
+That callback function, being called upon by a `click` event, knows to expect to recieve an `Object` full of data about what I clicked on - which includes the HTML element that was clicked, such as `<button id="checkout">` or `button#checkout`. 
+
+In the case of our game cards, let's see what type of data is given to the callback function when clicking on a "card" on the screen. In your `flipCard` function, add a parameter `evt`. We _can_ call this anything; `event`, `evt`, `e`, `click`, etc are typical parameter names you might see in other people's code, often named this way to indicate that an event object is expected. Once you have the parameter name in place, log it to the console from within the function:
 ```js
-function flipCard() {
+function flipCard(evt) {
   console.log('flipCard was executed');
+  console.log(evt);
 }
 ```
 
-After the `flipCard` function, add a function to shuffle the cards (what fun would this game be if the cards were always in the same position?):
-```js
-function shuffleCards() {
+Test this in your browser by reloading your game and clicking on different cards. Look at the console output and you will see all the data that is being passed from the click event to the `flipCard(evt)` function each time. There's a lot of data to look at there, but for our game to work the function only needs to know which card element was clicked.
 
+Assign the event's _target_ to a variable `clickedCard` (you can remove the console logs or comment them out):
+```js
+function flipCard(evt) {
+  // console.log('flipCard was executed');
+  // console.log(evt);
+  const clickedCard = evt.target;
 }
 ```
-Since we'll be making value changes to the global variables (mentioned above) as the game is played, when we DO want to replay the game, we'll want to shuffle the cards and begin again. Start building this `shuffleCards` function with some lines of code that reset the global variables to their original state:
-```js
-  matchedPairs = 0; // reset matchedPairs variable to 0
-  disableDeck = false; // reset disableDeck boolean to false
-  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables to empty string
-```
-Now what about the cards? We already have a `const cards` array that represents each of the `li` tags in the DOM, but we don't need to move the positions of our HTML elements, instead we can use an array of numbers to help shuffle our cards.
+In your console logs from earlier, you might have seen the event object formatted like this: `click: { target: li.card }`. That meant you clicked on an `<li>` element with a class of `card` - but wait! ALL of the `<li>` tags are `<li class="card">`! No worries, the event that is being passed is not just giving us the HTML, it is representing the exact DOM element that was clicked - the individal _card_ on the screen. The `evt.target` is representing the entire HTML element. That's the `li` tag that was clicked AND all of its `childNodes`.
 
-On the next line create an array of the numbers 1 through 8, with a duplicate set of those:
-```js
-let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
-```
-Now we'll "shuffle" this array using the JS Array method `.sort()`:
-```js
-arr.sort(() => Math.random() > 0.5 ? 1 : -1); // randomly sort the array
-```
-There's no need to re-assign the `arr` variable here, the `.sort()` method does that for us.
-
-Now we have an array of `cards` and an array of corresponding numbers that have been randomly sorted (shuffled), so we can use a `.foreach()` loop to combine them:
-```js
-cards.forEach((card, i) => { // loop over the set of cards. For each `card`...
-  card.classList.remove("flip"); // remove the 'flip' class
-  let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
-  imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
-  card.addEventListener("click", flipCard); // add a click event listener to the current card to execute a function `flipCard` when clicked
-});
-```
-
-The whole `shuffleCards` function definition should now look like this:
-```js
-function shuffleCards() {
-  matchedPairs = 0; // reset matchedPairs variable to 0
-  disableDeck = false; // reset disableDeck boolean to false
-  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables to empty string
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
-  arr.sort(() => Math.random() > 0.5 ? 1 : -1); // randomly sort the array
-  
-  cards.forEach((card, i) => { // loop over the set of cards. For each card...
-      card.classList.remove("flip"); // remove the 'flip' class
-      let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
-      imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
-      card.addEventListener("click", flipCard); // add a click event listener to the current card to execute a function `flipCard` when clicked
-  });
+Before we go further into our `flipCard` function, let's use some CSS to make sure that all the `back-view` cards are hidden from the player's view - we want to only show the jewel image in the event that a given card was clicked. Otherwise all the _cards_ should show the question mark icon. To do this, add the following to your `style.css` file:
+```css
+.card .back-view {
+  transform: rotateY(-180deg);
 }
 ```
 
-At the end of the `style.js` file, execute the `shuffleCards()` function:
-```js
-shuffleCards();
+Now when you test the game in the browser, all the cards should give the appearance of being "face-down".
+
+Next we want to have some CSS to support the card's "flipped" state. We will use JavaScript to add and remove a `flip` class to the clicked card element. Add this CSS to your `style.css` file so that something visual will happen to a card element when it has the `flip` class applied:
+```css
+.card.flip .back-view {
+  transform: rotateY(0);
+}
+.card.flip .front-view {
+  transform: rotateY(180deg);
+}
 ```
 
-Test the game in your browser with the devTools javascript console open. Whenever you refresh the page, the card images should shuffle. When you click on a card you should see your `console.log` message from the `flipCard` function.
+Go back to the `script.js` file, and add this conditional statement after the `clickedCard` variable is assigned (within the `flipCard` function):
+```js
+if (cardOne !== clickedCard && !disableDeck) { // make sure that the current variable cardOne is not the same value as the clickedCard, AND that the deck is NOT disabled
 
-In the [Step 4](/step-4), we'll build-out the `flipCard` function.
+  }
+```
+
+What is happening in this condition?
+We want to be able to compare two cards, but we need to assign values to the `cardOne` and `cardTwo` global variables. At the time that we compare the variables, we don't want the user to be able to click a _third_ card.
+
+When we start the game, the variable `disableDeck` is set to `false`. We will want to stop the `flipCard` function from doing anything if there are already two cards flipped. So when two cards are available we will change the `disableDeck` variable to `true`.
+
+We are using the NOT operator `!` to see that the set of cards of is NOT yet disabled. If the deck is not yet disabled, and the variable is still `false` then `!disableDeck` will evaluate to `true`.
+
+We also begin the game with a `cardOne` variable that is defined, but has no value. So when we first click a card in our game, `cardOne` should be _falsy_.
+
+This condition will check for two things. First, we want to be sure that the card that was clicked is not ALREADY a flipped card, so we use the comparison operation `cardOne !== clickedCard`. Then we also want to ensure that our functions are not currently comparing two cards, so we want to be sure that `!disableDeck` evaluates to `true`. This way both conditions are met and the rest of our `flipCard` function will run.
+
+Inside of the condition, we will add the `flip` class to the `clickedCard` DOM element:
+```js
+if (cardOne !== clickedCard && !disableDeck) { // make sure that the current variable cardOne is not the same value as the clickedCard, AND that the deck is NOT disabled
+  clickedCard.classList.add("flip"); // add the 'flip' class to the classes currently assigned to the clickedCard
+}
+```
+Test this in your browser - you should be able to flip each card!
+
+Now that we know we can _flip_ these cards over, let's start assigning variables so that the `flipCard` function will only allow the user to flip two cards at a time.
+
+After the `clickedCard.classList.add("flip");` line in the condition, add this code:
+```js
+if(!cardOne) { // if there is not yet a value assigned to the cardOne variable...
+    return cardOne = clickedCard; // set the cardOne value as the clickedCard and end this function.
+}
+// everything below will execute if the condition above was not met (if cardOne already had a value when flipCard() was called)
+cardTwo = clickedCard; // set the cardTwo value as the clickedCard
+disableDeck = true; // set this to true for the next time this flipCard function is called, when the top level condition is evaluated
+```
+
+Test the game now, and you should only be able to _flip_ two cards.
+
+In [Step 4](/step-4) we will evaluate if the two flipped cards match.

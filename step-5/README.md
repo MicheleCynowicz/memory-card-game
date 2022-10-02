@@ -1,120 +1,102 @@
-# Step 5: Compare cards and count pairs
-In the last step we setup the `flipCard` function and the global variables `cardOne`, `cardTwo`, and `disableDeck` in such a way that our player can only _flip_ two cards on the game board. Next we will create a `matchCards` function in `script.js` to evaluate the contents of our two cards to decide if they are a match.
+# Step 5: User experience (UX)
+Let's fix up some of the smaller interactions in our game.
 
-In `script.js` create this new function:
+First, let's add a `setTimeout` function inside of our `matchCards` function, so that our user has a chance to see the second card revealed, before deciding that it doesn't match. Wrap the last 5 lines of code in the `matchCards` function in a `setTimeout` function:
 ```js
-function matchCards(img1, img2) {
+  // these cards didn't match so we'll un-flip them, but let the user see them both before they disappear
+  setTimeout(() => {
+    cardOne.classList.remove("flip");
+    cardTwo.classList.remove("flip");
+    cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
+    return disableDeck = false;
+  }, 1200);
+```
 
+Did you notice that while the two cards are being evaluated, you cannot flip a third card? That's because of the `disableDeck` variable!
+
+Now that you've been playing your game, it might feel a little bit laggy with the 1200ms `setTimeout` that we added. Let's give this some more pizazz by adding another animation.
+
+Create a `shake` animation with CSS by putting this `@keyframes` block into your `style.css` file:
+```css
+@keyframes shake {
+  0%, 100%{
+    transform: translateX(0);
+  }
+  20%{
+    transform: translateX(-13px);
+  }
+  40%{
+    transform: translateX(13px);
+  }
+  60%{
+    transform: translateX(-8px);
+  }
+  80%{
+    transform: translateX(8px);
+  }
 }
 ```
 
-Since our `li.card` elements are all the same with the exception of the `src` attibute value (the actual image filename), we will want to compare the two card element's `back-view` image files. The `cardOne` and `cardTwo` DOM elements are assigned within the `flipCard` function, so go back to the `flipCard` function, and add this code after the line `disableDeck = true;`:
-```js
-// if the function has come this far, it means we have set values for both cardOne and cardTwo.
-// each of the cardOne and cardTwo variables currently represent a whole HTML element with childNodes
-let cardOneImg = cardOne.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `images/img-2.png`, and set that as the value of cardOneImg
-let cardTwoImg = cardTwo.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `images/img-2.png`, and set that as the value of cardTwoImg
-matchCards(cardOneImg, cardTwoImg); // now check the images by filename to see if they are a match!
-```
-
-Now we have a place inside of the `flipCard` function where the `matchCards` function is called, and we are passing two arguments: `cardOneImg` and `cardTwoImg` for the function to compare.
-
-In the `matchCards` function, create a condition using the `===` comparative operator:
-```js
-if (img1 === img2) { // this code will run if the card images match
-
+Now let's reference the animation with a class selector for a card with a `.shake` class:
+```css
+.card.shake{
+  animation: shake 0.35s ease-in-out;
 }
 ```
 
-Yay! You've matched a pair of cards. In order to win the game, the player must match all 8 pairs of cards. Once a pair has been matched, you will need to increment the number of `matchedPairs`. Add this increment operation inside the condition:
+In your `script.js` file, just above the `setTimeout` function you added in the previous step, add another `setTimeout` function to apply the `shake` class to the currently-viewable cards (which we already know do not match) and have it happen at `400` milliseconds:
 ```js
-matchedPairs++; // if the card images match, we can imcrement the global `matchedPairs` variable by 1 match
+setTimeout(() => {
+  cardOne.classList.add("shake");
+  cardTwo.classList.add("shake");
+}, 400);
 ```
 
-If the number of `matchedPairs` gets to `8`, then the game is won! Below the `matchedPairs++` line, add a condition and a response to decide if the game has been won:
+Oh! We also need to remove the `shake` class when the non-matching cards are un-flipped. Add the string `"shake"` to the code where you remove the `"flip"` class from the `classList` of the two selected cards:
 ```js
-if (matchedPairs == 8) { // if your number of matches is 8, you've made all the matches! Game Won!
-  console.log('YOU WIN!');
-  return; // for now, lets call this game over, end this function and do nothing else.
-}
-// everything below will execute if the game has not yet been won...
+cardOne.classList.remove("shake", "flip");
+cardTwo.classList.remove("shake", "flip");
 ```
 
-What if the game is still going, after a set of two cards are a match?
-First, we will want the matched cards to stay visible, and in a state where they cannot be _un-flipped_. On the next line in the `matchCards` function, add this code to remove the click event listeners from the `cardOne` and `cardTwo` elements:
-```js
-cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-```
+How does your game look on a small screen? Could this be played on a smartphone with a touchscreen? Probably not! Let's add some CSS to make the game a bit more responsive:
+```css
+@media screen and (max-width: 700px) {
+  .cards {
+    height: 350px;
+    width: 350px;
+  }
 
-Finally, while still in the `matchCards` function, reset the `cardOne`, `cardTwo`, and `disableDeck` variables to their original values from the start of the game, and end the function:
-```js
-cardOne = cardTwo = ""; // now reset the cardOne & cardTwo variables to empty strings, so we can use them again
-disableDeck = false;
-return;  // end function
-```
+  .card .front-view img {
+    width: 17px;
+  }
 
-Now we have code to handle what will happen to our game cards if the two selected cards match each other. What if they don't match?
-
-We end the `matchCards` function with the `return;` statement inside of the condition `if (img1 === img2) {}` but this means that the function only ends here if the two cards match! Add this code to the `matchCards` function, after the closing bracket of the `if (img1 === img2) {}` condition:
-```js
-// these cards didn't match, un-flip them...
-  cardOne.classList.remove("flip");
-  cardTwo.classList.remove("flip");
-  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-  disableDeck = false;
-  return;
-```
-
-Your `flipCard` and `matchCards` functions should now read like this:
-```js
-function flipCard(evt) { // take an event object's as a scoped variable
-  const clickedCard = evt.target; // set the event's target DOM element as a variable
-  if (cardOne !== clickedCard && !disableDeck) { // make sure that the current variable cardOne is not the same value as the clickedCard, AND that the deck is NOT disabled
-      clickedCard.classList.add("flip"); // add the 'flip' class to the classes currently assigned to the clickedCard
-      if(!cardOne) { // if there is not yet a value assigned to the cardOne variable...
-          return cardOne = clickedCard; // set the cardOne value as the clickedCard and end this function.
-      }
-      // everything below will execute if the condition above was not met (if cardOne already had a value when flipCard() was called)
-      cardTwo = clickedCard; // set the cardTwo value as the clickedCard
-      disableDeck = true; // set this to true for the next time this flipCard function is called, when the top level condition is evaluated
-      // if the function has come this far, it means we have set values for both cardOne and cardTwo.
-      // each of the cardOne and cardTwo variables currently represent a whole HTML element with childNodes
-      let cardOneImg = cardOne.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `img-2.png`, and set that as the value of cardOneImg
-      let cardTwoImg = cardTwo.querySelector(".back-view img").src; // query the elements inside cardOne to get the value of the img src, such as `img-2.png`, and set that as the value of cardTwoImg
-      matchCards(cardOneImg, cardTwoImg); // now check the images by filename to see if they are a match!
+  .card .back-view img {
+    max-width: 40px;
   }
 }
 
-function matchCards(img1, img2) {
-  if (img1 === img2) { // this code will run if the card images match
-    matchedPairs++; // if the card images match, we can imcrement the global `matchedPairs` variable by 1 match
-    if (matchedPairs == 8) { // if your number of matches is 8, you've made all the matches! Game Won!
-        console.log('YOU WIN!');
-        return; // for now, lets call this game over, end this function and do nothing else.
-    }
-    // everything below will execute if the game has not yet been won...
-    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-    cardOne = cardTwo = ""; // now reset the cardOne & cardTwo variables to empty strings, so we can use them again
-    disableDeck = false;
-    return; // end function
+@media screen and (max-width: 530px) {
+  .cards {
+    height: 300px;
+    width: 300px;
   }
-  // these cards didn't match, un-flip them...
-  cardOne.classList.remove("flip");
-  cardTwo.classList.remove("flip");
-  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-  disableDeck = false;
-  return; 
+
+  .card .front-view img {
+    width: 15px;
+  }
+
+  .card .back-view img {
+    max-width: 35px;
+  }
 }
 ```
 
-Test this in your browser! The first card you click will flip over, displaying the hidden image underneath. When you click the next card, it seems like nothing happened, and the first card is flipped back to its front-view. BUT something DID happen. If you keep playing the game until you find a matching pair, the matched pair stays matched.
+Play your game in your browser until you've matched all 8 pairs of cards. You should see the `YOU WIN!` message in the console. YAY! You've won. What should happen next?
 
-JavaScript is FAST. In this case, it's faster than the CSS animation to flip the second card! When you clicked a second card that was not a match, the comparison happened SO FAST in JavaScript that the `flip` class is added AND removed faster than the CSS could respond!
+Commit this work to your repository, make a new branch, and build something that you would like to see happen when the game is won. Then add some other game features. Should this game show the player how many pairs they've matched as they play? Should there be a button to start or reset the game? Should you see a special message when you win? Should this game have a timer?
 
-That's not fair gameplay is it? You never get to view the second card you clicked UNLESS it was a matched image :-(
+Use any suggestion from above, or get creative and come up with other feature ideas! 
 
-We'll fix this in [Step 6](/step-6).
-
-
+# Final assignment:
+Add at least 2 additional game features to the game using branches and pull requests. 
+Share your work and get some feedback!

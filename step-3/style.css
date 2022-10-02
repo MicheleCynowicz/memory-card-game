@@ -65,3 +65,17 @@ body {
 .card .back-view img {
   max-width: 45px;
 }
+
+/** **/
+.card .back-view {
+  transform: rotateY(-180deg);
+}
+
+.card.flip .back-view {
+  transform: rotateY(0);
+}
+
+.card.flip .front-view {
+  transform: rotateY(180deg);
+}
+/** **/

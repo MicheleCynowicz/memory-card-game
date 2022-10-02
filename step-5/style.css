@@ -66,7 +66,6 @@ body {
   max-width: 45px;
 }
 
-/** **/
 .card .back-view {
   transform: rotateY(-180deg);
 }
@@ -78,4 +77,55 @@ body {
 .card.flip .front-view {
   transform: rotateY(180deg);
 }
-/** **/
+
+.card.shake{
+  animation: shake 0.35s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100%{
+    transform: translateX(0);
+  }
+  20%{
+    transform: translateX(-13px);
+  }
+  40%{
+    transform: translateX(13px);
+  }
+  60%{
+    transform: translateX(-8px);
+  }
+  80%{
+    transform: translateX(8px);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .cards {
+    height: 350px;
+    width: 350px;
+  }
+
+  .card .front-view img {
+    width: 17px;
+  }
+
+  .card .back-view img {
+    max-width: 40px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .cards {
+    height: 300px;
+    width: 300px;
+  }
+
+  .card .front-view img {
+    width: 15px;
+  }
+
+  .card .back-view img {
+    max-width: 35px;
+  }
+}

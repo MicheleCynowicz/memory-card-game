@@ -29,18 +29,26 @@ function matchCards(img1, img2) {
         return; // for now, lets call this game over, end this function and do nothing else.
     }
     // everything below will execute if the game has not yet been won...
-    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
+    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matchedPairs card cannot be flipped anymore
+    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matchedPairs card cannot be flipped anymore
     cardOne = cardTwo = ""; // now reset the cardOne & cardTwo variables to empty strings, so we can use them again
     disableDeck = false;
     return; // end function
   }
-  // these cards didn't match, un-flip them...
-  cardOne.classList.remove("flip");
-  cardTwo.classList.remove("flip");
-  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-  disableDeck = false;
-  return; 
+  
+  setTimeout(() => {
+    cardOne.classList.add("shake");
+    cardTwo.classList.add("shake");
+  }, 400);
+
+  // these cards didn't match so we'll un-flip them, but let the user see them both before they disappear
+  setTimeout(() => {
+    cardOne.classList.remove("shake", "flip");
+    cardTwo.classList.remove("shake", "flip");
+    cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
+    disableDeck = false;
+    return;
+  }, 1200);
 }
 
 function shuffleCards() {
