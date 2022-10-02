@@ -8,7 +8,8 @@ First, let's add a `setTimeout` function inside of our `matchCards` function, so
     cardOne.classList.remove("flip");
     cardTwo.classList.remove("flip");
     cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-    return disableDeck = false;
+    disableDeck = false;
+    return;
   }, 1200);
 ```
 
