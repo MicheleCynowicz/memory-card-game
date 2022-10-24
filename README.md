@@ -2,7 +2,7 @@
 In this step-by-step project you will learn more about JavaScript as you create a card game.
 
 ## Get started
-Create a new git repository to work in, clone a localy copy, and create the following 3 files:
+Create a new git repository to work in, clone a local copy, and create the following 3 files:
 `index.html`
 `style.css`
 `script.js`
